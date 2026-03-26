@@ -1,0 +1,38 @@
+# LOGS
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# NODE MODULES
+node_modules/
+server/node_modules/
+client/node_modules/
+
+# BUILD OUTPUT
+dist/
+dist-ssr/
+client/dist/
+server/dist/
+
+# ENV FILES
+*.env
+*.local
+
+# EDITOR DIRECTORIES AND FILES
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# VITE / REACT SPECIFIC
+.vite/
+client/.vite/
