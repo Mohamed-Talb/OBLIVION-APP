@@ -1,0 +1,32 @@
+import { House, User, History } from 'lucide-react';
+
+export const NavBar = () => {
+    return (
+        <nav className="fixed bottom-2 left-2 right-2 z-50 mx-auto max-w-[414px] flex items-center justify-between px-4 py-1 bg-zinc-900 border border-zinc-700 text-white font-medium rounded-[5px]">
+            <div className="flex items-center justify-between w-full px-5">
+
+                <div>
+                    <button className="flex flex-col items-center gap-1">
+                        <House />
+                        <span className="text-xs">Home</span>
+                    </button>
+                </div>
+
+                <div>
+                    <button className="flex flex-col items-center gap-1">
+                        <History />
+                        <span className="text-xs">History</span>
+                    </button>
+                </div>
+
+                <div>
+                    <button className="flex flex-col items-center gap-1">
+                        <User />
+                        <span className="text-xs">Profile</span>
+                    </button>
+                </div>
+
+            </div>
+        </nav>
+    );
+}
