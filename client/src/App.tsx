@@ -1,16 +1,21 @@
-// import { Home } from "./pages/home";
-// import { PastEvents } from "./pages/pastevents";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Home } from "./pages/home";
+import { PastEvents } from "./pages/pastevents";
 import { Profile } from "./pages/profile";
+import { Login } from "./pages/login";
 
-
-function App()
-{
+function App() {
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      {/* <Home /> */}
-      {/* <PastEvents /> */}
-      <Profile />
-    </div>
+    <BrowserRouter>
+      <div className="min-h-screen flex items-center justify-center">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/pastevents" element={<PastEvents />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 
