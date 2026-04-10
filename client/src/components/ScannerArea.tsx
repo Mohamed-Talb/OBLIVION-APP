@@ -26,7 +26,7 @@ export const ScannerArea = ({ selectedEventId }: ScannerAreaProps) => {
             console.log(error);
         }
 
-        scanner.render(onScanSuccess, onScanFailure);
+        scanner.render(onScanSuccess, onScanFailure, { facingMode: "environment" });
 
         return () => {
             scanner.clear().catch(() => { });
