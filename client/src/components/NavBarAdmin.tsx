@@ -8,7 +8,7 @@ export const NavBarAdmin = () => {
     { to: "/admin", icon: House, label: "Home" },
     { to: "/admin/scan", icon: ScanLine, label: "Scan" },
     { to: "/admin/events", icon: Calendar, label: "Events" },
-    { to: "/admin/add-event", icon: SquarePlus, label: "Add Event" },
+    { to: "/admin/addEvent", icon: SquarePlus, label: "Add Event" },
     { to: "/admin/profile", icon: User, label: "Profile" },
   ];
 
@@ -21,9 +21,8 @@ export const NavBarAdmin = () => {
             <Link
               key={item.to}
               to={item.to}
-              className={`flex flex-col items-center mt-1 px-2 transition-colors ${
-                isActive ? "text-white" : "text-zinc-300 hover:text-white"
-              }`}
+              className={`flex flex-col items-center mt-1 px-2 transition-colors ${isActive ? "text-white" : "text-zinc-300 hover:text-white"
+                }`}
             >
               <item.icon size={22} strokeWidth={isActive ? 2.5 : 1.8} />
               <span className="text-[10px] text-white/90">{item.label}</span>

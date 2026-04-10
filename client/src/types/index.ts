@@ -12,3 +12,17 @@ export interface User {
     name: string;
     username: string;
 }
+
+export interface KPIData {
+    id: string;
+    title: string;
+    value: number;
+}
+
+export interface ScanRecord {
+    id: number;
+    name: string;
+    username: string;
+    status: string;
+    time: string;
+}

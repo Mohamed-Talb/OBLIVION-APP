@@ -28,7 +28,7 @@ export const AddEventForm = () => {
     }
 
     return (
-        <div className="flex flex-col items-center justify-start min-h-screen w-full pt-16 pb-24 px-4">
+        <div className="flex flex-col items-center justify-start w-full px-1">
             <div className="w-full max-w-[390px]">
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
 

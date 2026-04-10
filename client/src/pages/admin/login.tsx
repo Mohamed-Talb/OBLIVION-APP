@@ -1,5 +1,5 @@
-import { Logo } from "../components/Logo";
-import intralogo from "../assets/intra_logo_white.svg";
+import { Logo } from "../../components/Logo";
+import intralogo from "../../assets/intra_logo_white.svg";
 
 export const Login = () => {
   return (

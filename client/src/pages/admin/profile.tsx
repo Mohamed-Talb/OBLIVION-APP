@@ -1,10 +1,10 @@
-import { Header } from "../components/Header.tsx";
-import { NavBar } from "../components/NavBar.tsx";
+import { Header } from "../../components/Header.tsx";
+import { NavBarAdmin } from "../../components/NavBarAdmin.tsx";
 import { QRCodeSVG } from "qrcode.react";
-import { initialUser } from "../Mock_data/user";
+import { initialAdmin } from "../../Mock_data/admin";
 
 export const Profile = () => {
-  const user = initialUser;
+  const user = initialAdmin;
 
   return (
     <div className="flex flex-col items-center justify-start min-h-screen w-full pt-16 pb-20 px-4 focus:outline-none">
@@ -43,7 +43,7 @@ export const Profile = () => {
         </div>
       </div>
 
-      <NavBar />
+      <NavBarAdmin />
     </div>
   );
 };

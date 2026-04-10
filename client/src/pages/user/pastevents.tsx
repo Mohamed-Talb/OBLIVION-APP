@@ -1,7 +1,7 @@
-import { Header } from "../components/Header.tsx";
-import { NavBar } from "../components/NavBar.tsx";
-import { EventCard } from "../components/EventCard.tsx";
-import { events } from "../Mock_data/events";
+import { Header } from "../../components/Header.tsx";
+import { NavBar } from "../../components/NavBar.tsx";
+import { EventCard } from "../../components/EventCard.tsx";
+import { events } from "../../Mock_data/events";
 
 export const PastEvents = () => {
   return (

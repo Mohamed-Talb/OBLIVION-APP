@@ -1,13 +1,16 @@
 import { LogOut, ChevronLeft } from "lucide-react";
-import avatar from "../assets/man-avatar.png";
+// import avatar from "../assets/man-avatar.png";
 import { useNavigate } from "react-router-dom";
+import type { User } from "../types";
+import { initialUser } from "../Mock_data/user";
 
 interface HeaderProps {
   variant?: "home" | "page";
   title?: string;
+  user?: User;
 }
 
-export const Header = ({ variant = "home", title }: HeaderProps) => {
+export const Header = ({ variant = "home", title, user = initialUser }: HeaderProps) => {
   const navigate = useNavigate();
 
   return (
@@ -16,10 +19,10 @@ export const Header = ({ variant = "home", title }: HeaderProps) => {
         {/* Left Section */}
         {variant === "home" ? (
           <div className="flex items-center gap-3">
-            <img src={avatar} alt="Logo" className="w-10 h-10 rounded-full" />
+            <img src={user.image_profile} alt="Logo" className="w-10 h-10 rounded-full" />
             <div className="flex flex-col items-start">
-              <p className="text-sm">Lachhab Oussama</p>
-              <p className="text-xs text-zinc-400">@olachhab</p>
+              <p className="text-sm line-clamp-1">{user.name}</p>
+              <p className="text-xs text-zinc-400">@{user.username}</p>
             </div>
           </div>
         ) : (
