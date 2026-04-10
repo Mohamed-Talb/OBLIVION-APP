@@ -10,67 +10,61 @@ export const ScannerArea = ({ selectedEventId }: ScannerAreaProps) => {
     const [scanResult, setScanResult] = useState<string | null>(null);
 
     useEffect(() => {
-        // We only want the scanner to render if an event is selected and there isn't a success result yet
         if (!selectedEventId || scanResult) return;
 
-        // Initialize the scanner widget
-        const html5QrcodeScanner = new Html5QrcodeScanner(
-            "reader",
-            {
-                fps: 10,
-                qrbox: { width: 250, height: 250 },
-                rememberLastUsedCamera: true,
-                supportedScanTypes: [
-                    0, // Html5QrcodeScanType.SCAN_TYPE_CAMERA
-                    1, // Html5QrcodeScanType.SCAN_TYPE_FILE
-                ],
-            },
-            false // verbose flag
-        );
+        const scanner = new Html5QrcodeScanner("reader", {
+            qrbox: { width: 250, height: 250 },
+            fps: 10,
+        });
 
-        const onScanSuccess = (decodedText: string) => {
+        function onScanSuccess(decodedText: string, decodedResult: any) {
+            scanner.clear();
             setScanResult(decodedText);
-            console.log("Scanned QR:", decodedText);
-            // We clear the scanner after a successful scan to stop the camera
-            html5QrcodeScanner.clear();
-        };
+        }
 
-        const onScanFailure = () => {
-            // Ignore scan failures as it continuously fires them when it doesn't detect a code in the frame
-        };
+        function onScanFailure(error: string) {
+            console.log(error);
+        }
 
-        html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+        scanner.render(onScanSuccess, onScanFailure);
 
-        // Cleanup function to clear scanner when component unmounts or state changes
         return () => {
-            try {
-                html5QrcodeScanner.clear().catch(error => {
-                    console.error("Failed to clear html5QrcodeScanner. ", error);
-                });
-            } catch (error) {
-                console.error("Cleanup error", error);
-            }
+            scanner.clear().catch(() => { });
         };
     }, [selectedEventId, scanResult]);
 
+
     return (
-        <div className={`flex flex-col items-center justify-center w-full min-h-[350px] rounded-2xl border-2 border-dashed ${selectedEventId ? 'border-blue-500/50 bg-[#1C1F26] overflow-hidden' : 'border-white/10 bg-[#1C1F26]/40 p-4'} relative transition-colors`}>
-            
+        <div
+            className={`flex flex-col items-center justify-center w-full min-h-[350px] rounded-2xl border-2 border-dashed relative transition-colors ${selectedEventId
+                    ? "border-blue-500/50 bg-[#1C1F26] overflow-hidden"
+                    : "border-white/10 bg-[#1C1F26]/40 p-4"
+                }`}
+        >
             {!selectedEventId ? (
                 <div className="flex flex-col items-center gap-4 text-center">
                     <p className="text-white font-medium tracking-wide text-[15px]">
                         Please select an event first
                     </p>
-                    <p className="text-xs text-[#A0AEC0]">Scanner will activate upon selection.</p>
+                    <p className="text-xs text-[#A0AEC0]">
+                        Scanner will activate upon selection.
+                    </p>
                 </div>
             ) : scanResult ? (
                 <div className="flex flex-col items-center gap-3 p-4 w-full h-full justify-center bg-[#1C1F26] z-10">
                     <div className="w-16 h-16 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mb-2">
                         <CheckCircle2 size={32} />
                     </div>
-                    <p className="text-white font-medium text-[16px]">Scanned Successfully!</p>
-                    <p className="text-xs text-[#A0AEC0] max-w-[250px] truncate text-center mb-2">{scanResult}</p>
-                    <button 
+
+                    <p className="text-white font-medium text-[16px]">
+                        Scanned Successfully!
+                    </p>
+
+                    <p className="text-xs text-[#A0AEC0] max-w-[250px] truncate text-center mb-2">
+                        {scanResult}
+                    </p>
+
+                    <button
                         onClick={() => setScanResult(null)}
                         className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-semibold transition-colors mt-2"
                     >
@@ -78,9 +72,8 @@ export const ScannerArea = ({ selectedEventId }: ScannerAreaProps) => {
                     </button>
                 </div>
             ) : (
-                <div className="w-full h-full bg-white [&_#reader]:border-none [&_#reader]:w-full [&_button]:bg-blue-600 [&_button]:text-white [&_button]:px-4 [&_button]:py-2 [&_button]:rounded-lg [&_button]:text-sm [&_button]:font-medium [&_button]:border-none [&_button]:mt-2 [&_select]:mb-2 [&_select]:p-1 [&_select]:rounded">
-                    {/* The specific div ID the html5-qrcode library targets */}
-                    <div id="reader"></div>
+                <div className="w-full h-[320px] bg-white rounded-lg overflow-hidden">
+                    <div id="reader" className="w-full h-full" />
                 </div>
             )}
         </div>
