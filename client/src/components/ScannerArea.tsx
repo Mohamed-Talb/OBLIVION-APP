@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { CheckCircle2 } from "lucide-react";
-import { Html5QrcodeScanner } from "html5-qrcode";
+import { Html5Qrcode } from "html5-qrcode";
 
 interface ScannerAreaProps {
     selectedEventId: number | "";
@@ -8,39 +8,44 @@ interface ScannerAreaProps {
 
 export const ScannerArea = ({ selectedEventId }: ScannerAreaProps) => {
     const [scanResult, setScanResult] = useState<string | null>(null);
+    const qrRef = useRef<Html5Qrcode | null>(null);
 
     useEffect(() => {
         if (!selectedEventId || scanResult) return;
 
-        const scanner = new Html5QrcodeScanner("reader", {
-            qrbox: { width: 250, height: 250 },
-            fps: 5,
-        });
+        const html5QrCode = new Html5Qrcode("reader");
+        qrRef.current = html5QrCode;
 
-        function onScanSuccess(decodedText: string, decodedResult: any) {
-            scanner.clear();
-            setScanResult(decodedText);
-        }
-
-        function onScanFailure(error: string) {
-            console.log(error);
-        }
-
-        scanner.render(onScanSuccess, onScanFailure, {
-            facingMode: "environment"
+        html5QrCode.start(
+            { facingMode: { exact: "environment" } }, // ✅ force back camera
+            {
+                fps: 10,
+                qrbox: { width: 250, height: 250 },
+            },
+            (decodedText: string) => {
+                html5QrCode.stop().then(() => {
+                    setScanResult(decodedText);
+                });
+            },
+            (error: string) => {
+                console.log(error);
+            }
+        ).catch((err) => {
+            console.error("Camera start failed:", err);
         });
 
         return () => {
-            scanner.clear().catch(() => { });
+            if (qrRef.current) {
+                qrRef.current.stop().catch(() => { });
+            }
         };
     }, [selectedEventId, scanResult]);
-
 
     return (
         <div
             className={`flex flex-col items-center justify-center w-full min-h-[350px] rounded-2xl border-2 border-dashed relative transition-colors ${selectedEventId
-                ? "border-blue-500/50 bg-[#1C1F26] overflow-hidden"
-                : "border-white/10 bg-[#1C1F26]/40 p-4"
+                    ? "border-blue-500/50 bg-[#1C1F26] overflow-hidden"
+                    : "border-white/10 bg-[#1C1F26]/40 p-4"
                 }`}
         >
             {!selectedEventId ? (
