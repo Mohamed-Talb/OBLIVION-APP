@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { ScanLine, CheckCircle2 } from "lucide-react";
-import { Scanner } from "@yudiel/react-qr-scanner";
+import { useState, useEffect } from "react";
+import { CheckCircle2 } from "lucide-react";
+import { Html5QrcodeScanner } from "html5-qrcode";
 
 interface ScannerAreaProps {
     selectedEventId: number | "";
@@ -9,27 +9,62 @@ interface ScannerAreaProps {
 export const ScannerArea = ({ selectedEventId }: ScannerAreaProps) => {
     const [scanResult, setScanResult] = useState<string | null>(null);
 
-    const handleScan = (result: any) => {
-        if (result && result.length > 0) {
-            // Support for @yudiel/react-qr-scanner v2 array structure
-            const value = typeof result === 'string' ? result : result[0].rawValue;
-            setScanResult(value);
-            console.log("Scanned QR:", value);
-        }
-    };
+    useEffect(() => {
+        // We only want the scanner to render if an event is selected and there isn't a success result yet
+        if (!selectedEventId || scanResult) return;
+
+        // Initialize the scanner widget
+        const html5QrcodeScanner = new Html5QrcodeScanner(
+            "reader",
+            {
+                fps: 10,
+                qrbox: { width: 250, height: 250 },
+                rememberLastUsedCamera: true,
+                supportedScanTypes: [
+                    0, // Html5QrcodeScanType.SCAN_TYPE_CAMERA
+                    1, // Html5QrcodeScanType.SCAN_TYPE_FILE
+                ],
+            },
+            false // verbose flag
+        );
+
+        const onScanSuccess = (decodedText: string) => {
+            setScanResult(decodedText);
+            console.log("Scanned QR:", decodedText);
+            // We clear the scanner after a successful scan to stop the camera
+            html5QrcodeScanner.clear();
+        };
+
+        const onScanFailure = () => {
+            // Ignore scan failures as it continuously fires them when it doesn't detect a code in the frame
+        };
+
+        html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+
+        // Cleanup function to clear scanner when component unmounts or state changes
+        return () => {
+            try {
+                html5QrcodeScanner.clear().catch(error => {
+                    console.error("Failed to clear html5QrcodeScanner. ", error);
+                });
+            } catch (error) {
+                console.error("Cleanup error", error);
+            }
+        };
+    }, [selectedEventId, scanResult]);
 
     return (
-        <div className={`flex flex-col items-center justify-center w-full h-[320px] rounded-2xl border-2 border-dashed ${selectedEventId ? 'border-blue-500/50 bg-[#1C1F26] overflow-hidden' : 'border-white/10 bg-[#1C1F26]/40 gap-4'} relative transition-colors`}>
+        <div className={`flex flex-col items-center justify-center w-full min-h-[350px] rounded-2xl border-2 border-dashed ${selectedEventId ? 'border-blue-500/50 bg-[#1C1F26] overflow-hidden' : 'border-white/10 bg-[#1C1F26]/40 p-4'} relative transition-colors`}>
             
             {!selectedEventId ? (
-                <>
-                    <ScanLine size={48} className="text-zinc-600" />
-                    <p className="text-white font-medium tracking-wide text-sm">
+                <div className="flex flex-col items-center gap-4 text-center">
+                    <p className="text-white font-medium tracking-wide text-[15px]">
                         Please select an event first
                     </p>
-                </>
+                    <p className="text-xs text-[#A0AEC0]">Scanner will activate upon selection.</p>
+                </div>
             ) : scanResult ? (
-                <div className="flex flex-col items-center gap-3 p-4">
+                <div className="flex flex-col items-center gap-3 p-4 w-full h-full justify-center bg-[#1C1F26] z-10">
                     <div className="w-16 h-16 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mb-2">
                         <CheckCircle2 size={32} />
                     </div>
@@ -43,18 +78,9 @@ export const ScannerArea = ({ selectedEventId }: ScannerAreaProps) => {
                     </button>
                 </div>
             ) : (
-                <div className="w-full h-full relative">
-                    <Scanner
-                        onScan={(result) => handleScan(result)}
-                        styles={{
-                            container: { width: '100%', height: '100%', paddingTop: "0" }
-                        }}
-                    />
-                    <div className="absolute inset-x-0 bottom-6 flex justify-center pointer-events-none">
-                        <p className="bg-black/70 px-4 py-2 rounded-full text-white text-[11px] font-semibold tracking-wider">
-                            Position QR code within frame
-                        </p>
-                    </div>
+                <div className="w-full h-full bg-white [&_#reader]:border-none [&_#reader]:w-full [&_button]:bg-blue-600 [&_button]:text-white [&_button]:px-4 [&_button]:py-2 [&_button]:rounded-lg [&_button]:text-sm [&_button]:font-medium [&_button]:border-none [&_button]:mt-2 [&_select]:mb-2 [&_select]:p-1 [&_select]:rounded">
+                    {/* The specific div ID the html5-qrcode library targets */}
+                    <div id="reader"></div>
                 </div>
             )}
         </div>
