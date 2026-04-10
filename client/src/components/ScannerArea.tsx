@@ -7,6 +7,7 @@ interface ScannerAreaProps {
 }
 
 export const ScannerArea = ({ selectedEventId }: ScannerAreaProps) => {
+
     const [scanResult, setScanResult] = useState<string | null>(null);
     const qrRef = useRef<Html5Qrcode | null>(null);
 
@@ -17,7 +18,7 @@ export const ScannerArea = ({ selectedEventId }: ScannerAreaProps) => {
         qrRef.current = html5QrCode;
 
         html5QrCode.start(
-            { facingMode: { exact: "environment" } }, // ✅ force back camera
+            { facingMode: { exact: "environment" } },
             {
                 fps: 10,
                 qrbox: { width: 250, height: 250 },
