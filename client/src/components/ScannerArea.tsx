@@ -80,7 +80,7 @@ export const ScannerArea = ({ selectedEventId }: ScannerAreaProps) => {
                     </button>
                 </div>
             ) : (
-                <div className="w-full h-[320px] bg-white rounded-lg overflow-hidden">
+                <div className="w-full h-[350px] bg-white rounded-lg overflow-hidden">
                     <div id="reader" className="w-full h-full" />
                 </div>
             )}
