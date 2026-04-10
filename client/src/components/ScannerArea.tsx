@@ -15,7 +15,7 @@ export const ScannerArea = ({ selectedEventId }: ScannerAreaProps) => {
         const scanner = new Html5QrcodeScanner("reader", {
             qrbox: { width: 250, height: 250 },
             fps: 10,
-        });
+        }, false);
 
         function onScanSuccess(decodedText: string, decodedResult: any) {
             scanner.clear();
@@ -37,8 +37,8 @@ export const ScannerArea = ({ selectedEventId }: ScannerAreaProps) => {
     return (
         <div
             className={`flex flex-col items-center justify-center w-full min-h-[350px] rounded-2xl border-2 border-dashed relative transition-colors ${selectedEventId
-                    ? "border-blue-500/50 bg-[#1C1F26] overflow-hidden"
-                    : "border-white/10 bg-[#1C1F26]/40 p-4"
+                ? "border-blue-500/50 bg-[#1C1F26] overflow-hidden"
+                : "border-white/10 bg-[#1C1F26]/40 p-4"
                 }`}
         >
             {!selectedEventId ? (
