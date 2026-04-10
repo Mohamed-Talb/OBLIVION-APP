@@ -14,8 +14,8 @@ export const ScannerArea = ({ selectedEventId }: ScannerAreaProps) => {
 
         const scanner = new Html5QrcodeScanner("reader", {
             qrbox: { width: 250, height: 250 },
-            fps: 10,
-        }, false);
+            fps: 5,
+        });
 
         function onScanSuccess(decodedText: string, decodedResult: any) {
             scanner.clear();
@@ -26,7 +26,9 @@ export const ScannerArea = ({ selectedEventId }: ScannerAreaProps) => {
             console.log(error);
         }
 
-        scanner.render(onScanSuccess, onScanFailure, { facingMode: "environment" });
+        scanner.render(onScanSuccess, onScanFailure, {
+            facingMode: "environment"
+        });
 
         return () => {
             scanner.clear().catch(() => { });
