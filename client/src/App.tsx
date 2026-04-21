@@ -5,7 +5,7 @@ import { Login as AdminLogin } from "./pages/admin/login";
 import { Profile as AdminProfile } from "./pages/admin/profile";
 import { AddEvent } from "./pages/admin/addEvent";
 import { ScanPage } from "./pages/admin/scan";
-
+import { Events } from "./pages/admin/events";
 
 // import { Home } from "./pages/user/home";
 // import { PastEvents } from "./pages/user/pastevents";
@@ -29,6 +29,7 @@ function App() {
       <Routes>
         <Route path="/admin" element={<Home />} />
         <Route path="/admin/scan" element={<ScanPage />} />
+        <Route path="/admin/events" element={<Events />} />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/profile" element={<AdminProfile />} />
         <Route path="/admin/addEvent" element={<AddEvent />} />

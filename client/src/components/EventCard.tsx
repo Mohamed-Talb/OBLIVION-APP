@@ -6,6 +6,8 @@ interface EventCardProps {
 }
 
 export const EventCard = ({ event }: EventCardProps) => {
+  const isActive = event.status === "active";
+
   return (
     <div className="flex flex-row w-full bg-[#1C1F26] rounded-[5px] p-3 gap-4 border border-white/5 shadow-sm hover:bg-[#252A36] transition-colors cursor-pointer">
       {/* Image Section */}
@@ -19,7 +21,15 @@ export const EventCard = ({ event }: EventCardProps) => {
 
       {/* Content Section */}
       <div className="flex flex-col flex-1 py-1 justify-between justify-start items-start">
-        <div className="flex flex-col gap-1 justify-start items-start">
+        <div className="flex flex-col gap-1 justify-start items-start w-full">
+          {/* Status Badge */}
+          <span className={`inline-flex items-center gap-1.5 text-[10px] font-semibold tracking-wider px-2 py-0.5 rounded-full mb-1 ${isActive
+            ? "text-green-400 border border-green-400"
+            : "text-white border border-white-400"
+            }`}>
+            <span className={`w-1.5 h-1.5 rounded-full ${isActive ? "bg-green-400" : "bg-zinc-500"}`} />
+            {isActive ? "Active" : "Finished"}
+          </span>
           <h4 className="text-white font-semibold text-base mb-1.5 text-start">
             {event.title}
           </h4>
@@ -42,3 +52,4 @@ export const EventCard = ({ event }: EventCardProps) => {
     </div>
   );
 };
+

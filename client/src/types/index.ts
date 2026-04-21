@@ -5,6 +5,7 @@ export interface EventInfo {
     date: string;
     location: string;
     image: string;
+    status: "active" | "finished";
 }
 
 export interface User {
