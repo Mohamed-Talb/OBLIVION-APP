@@ -27,3 +27,9 @@ export interface ScanRecord {
     status: string;
     time: string;
 }
+
+export interface ScanPayload {
+    qr_code: string;       // raw value from the QR scan
+    event_id: number;      // which event was being scanned at
+    scanned_at: string;    // ISO 8601 timestamp
+}

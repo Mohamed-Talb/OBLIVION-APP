@@ -5,19 +5,30 @@ import { EventSelector } from "../../components/EventSelector";
 import { ScannerArea } from "../../components/ScannerArea";
 import { RecentScans } from "../../components/RecentScans";
 import { recentScans as initialScans } from "../../Mock_data/scans";
-import type { ScanRecord } from "../../types";
+import type { ScanRecord, ScanPayload } from "../../types";
 
 export const ScanPage = () => {
     const [selectedEventId, setSelectedEventId] = useState<number | "">("");
     const [scans, setScans] = useState<ScanRecord[]>(initialScans);
 
     const handleScan = (result: string) => {
+        // Simplified payload — ready to POST to the backend
+        const payload: ScanPayload = {
+            qr_code: result,
+            event_id: selectedEventId as number,
+            scanned_at: new Date().toISOString(),
+        };
+
+        console.log("Scan Payload:", JSON.stringify(payload, null, 2));
+        // TODO: fetch("/api/scans", { method: "POST", body: JSON.stringify(payload) })
+
+        // Update the live UI list
         const newScan: ScanRecord = {
             id: Date.now(),
             name: result,
             username: result.toLowerCase().replace(/\s+/g, ""),
             status: "valid",
-            time: "Just now",
+            time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
         };
         setScans((prev) => [newScan, ...prev]);
     };
